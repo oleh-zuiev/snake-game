@@ -156,3 +156,11 @@ ol {
   top: 50px;
   left: 50px;
 }
+/* ============= */
+.stop-button {
+  /* width: 30px; */
+  width: fit-content;
+  height: 30px;
+  background-color: coral;
+  border-radius: 3px;
+}

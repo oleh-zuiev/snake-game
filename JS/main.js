@@ -2,86 +2,94 @@
 let str;
 let horizontalPosition;
 let verticalPosition;
-let snakeRef = document.querySelector('.snake'); 
-snakeRef.style.top = '51%';
-snakeRef.style.left = '51%'; 
-// ===========================
-// var declaration = document.styleSheets[0].cssRules[0].style;
-// var value = declaration.getPropertyValue('backgroung-color');
-// console.log('eeverv',value);
-// ===========================
-
-// ======Test=======
-let infoTop;
-let infoLeft;
-snakeRef.addEventListener('click', function (e) {
-  let infoTop= snakeRef.style['top'];
-  console.log(infoTop);
-  snakeRef.style.top = '60%';
-  snakeRef.style.left = '60%';
-  infoTop= snakeRef.style['top'];
-  infoLeft= snakeRef.style['left'];
-  console.log(infoTop);
-  console.log(infoLeft);
-  console.log('strange moves');
-});
+let stopButtonRef = document.querySelector(".stop-button");
+let snakeRef = document.querySelector(".snake");
+let animationFrameId;
+let timeOutId;
+let fps = 5;
+// ============================
+snakeRef.style.top = "51%";
+snakeRef.style.left = "51%";
+let moveSnakeToggle = true; //is not in use
 // =============================
-document.addEventListener('keydown', function (event) {
+document.addEventListener("keydown", function (event) {
   const key = event.key;
-  console.log(key);
- switch (key) {
-    case "ArrowLeft":
-        str = 'Left';
-        break;
-    case "ArrowRight":
-        str = 'Right';
-        break;
-    case "ArrowUp":
-        str = 'Up';
-        break;
-    case "ArrowDown":
-        str = 'Down';
-        break;
+  clearTimeout(timeOutId);
+  cancelAnimationFrame(animationFrameId);
+  if (
+    key !== "ArrowLeft" &&
+    key !== "ArrowRight" &&
+    key !== "ArrowUp" &&
+    key !== "ArrowDown"
+  ) {
+    return;
   }
-  // ================
+  switch (key) {
+    case "ArrowLeft":
+      str = "Left";
+      break;
+    case "ArrowRight":
+      str = "Right";
+      break;
+    case "ArrowUp":
+      str = "Up";
+      break;
+    case "ArrowDown":
+      str = "Down";
+      break;
+  }
+  // window.cancelAnimationFrame(moveSnake);
   getPositionOfSnake();
-  // ================
-  moveSnake(str);
-  // console.log(str);
-  });
-  // ========================
+  animationFrameId = requestAnimationFrame(moveSnake);
+  // moveSnake(str);
+});
+// ========================
 
 function getPositionOfSnake() {
-  horizontalPosition = Number.parseInt(snakeRef.style['left']);
-  verticalPosition = Number.parseInt(snakeRef.style['top']);
+  horizontalPosition = Number.parseInt(snakeRef.style["left"]);
+  verticalPosition = Number.parseInt(snakeRef.style["top"]);
   console.log(horizontalPosition);
   console.log(verticalPosition);
 }
 // =================
-function moveSnake(strWithDirection) {
-  console.log(strWithDirection);
-  if (strWithDirection === 'Up') {
+function moveSnake() {
+  console.log(str);
+  if (str === "Up") {
     verticalPosition -= 1;
-    snakeRef.style.top =verticalPosition+'%';
+    snakeRef.style.top = verticalPosition + "%";
   }
-  if (strWithDirection === 'Down') {
+  if (str === "Down") {
     verticalPosition += 1;
-    snakeRef.style.top =verticalPosition+'%';
+    snakeRef.style.top = verticalPosition + "%";
   }
-  if (strWithDirection === 'Left') {
+  if (str === "Left") {
     horizontalPosition -= 1;
-    snakeRef.style.left = horizontalPosition+'%';
+    snakeRef.style.left = horizontalPosition + "%";
   }
-  if (strWithDirection === 'Right') {
+  if (str === "Right") {
     horizontalPosition += 1;
-    snakeRef.style.left = horizontalPosition + '%';
+    snakeRef.style.left = horizontalPosition + "%";
   }
+
+  timeOutId = setTimeout(function () {
+    //throttle requestAnimationFrame to 20fps
+    animationFrameId = requestAnimationFrame(moveSnake);
+  }, 1000 / fps);
+  moveSnakeToggle = false; //is not in use
 }
-  
-  // ============================
+
+// ============================
+stopButtonRef.addEventListener("click", function () {
+  // console.log("hooray");
+  clearTimeout(timeOutId);
+  cancelAnimationFrame(animationFrameId);
+});
+// =======================
+
+// =====================
 //   var id = null;
 // function myMove() {
-//   var elem = document.getElementById("myAnimation");   
+//   var elem = document.getElementById("myAnimation");
 //   var pos = 0;
 //   clearInterval(id);
 //   id = setInterval(frame, 10);
@@ -89,9 +97,9 @@ function moveSnake(strWithDirection) {
 //     if (pos == 350) {
 //       clearInterval(id);
 //     } else {
-//       pos++; 
-//       elem.style.top = pos + 'px'; 
-//       elem.style.left = pos + 'px'; 
+//       pos++;
+//       elem.style.top = pos + 'px';
+//       elem.style.left = pos + 'px';
 //     }
 //   }
 // }
