@@ -17,3 +17,19 @@ requestAnimationFrame(movediv)
 
 requestAnimationFrame(movediv)
 In this version of moving a DIV horizontally, we're throttling the frames per second to roughly 20, by calling requestAnimationFrame inside setTimeout() each time.
+
+<!-- =======Multiple functions with requestAnimationFrame============== -->
+
+As you noticed, you should call requestAnimationFrame only once per frame. It means that you need to call it once upon starting your game, and then once at the end of the same function it calls. For instance:
+
+requestAnimationFrame(draw);
+function draw() {
+if (onCutScene) drawCutScene();
+else if (onMainMenu) drawMainMenu();
+else if (inGame) drawGame();
+else if etc... //Or use a gameState variable and a switch..case
+requestAnimationFrame(draw);
+}
+The inner functions should not call requestAnimationFrame again.
+
+<!-- =========We can wrap v=============== -->

@@ -70,7 +70,7 @@ function moveSnake() {
     horizontalPosition += 1;
     snakeRef.style.left = horizontalPosition + "%";
   }
-
+  readOffset(snakeRef);
   timeOutId = setTimeout(function () {
     //throttle requestAnimationFrame to 20fps
     animationFrameId = requestAnimationFrame(moveSnake);
@@ -85,8 +85,16 @@ stopButtonRef.addEventListener("click", function () {
   cancelAnimationFrame(animationFrameId);
 });
 // =======================
-
+function readOffset(el) {
+  let toLeft = el.offsetLeft;
+  let fromTop = el.offsetTop;
+  console.log("offsets:", toLeft, fromTop);
+}
 // =====================
+function generateTarget() {
+  console.log("smth");
+}
+// ====================
 //   var id = null;
 // function myMove() {
 //   var elem = document.getElementById("myAnimation");
