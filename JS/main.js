@@ -7,7 +7,7 @@ let stopButtonRef = document.querySelector(".stop-button");
 let snakeRef = document.querySelector(".snake");
 let animationFrameId;
 let timeOutId;
-let fps = 5;
+let fps = 7;
 let targetForsnake;
 // ----------
 let coordinatesOfSnake; //it's an array
