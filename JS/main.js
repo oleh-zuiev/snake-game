@@ -7,7 +7,7 @@ let stopButtonRef = document.querySelector(".stop-button");
 let snakeRef = document.querySelector(".snake");
 let animationFrameId;
 let timeOutId;
-let fps = 25;
+let fps = 5;
 let targetForsnake;
 // ----------
 let coordinatesOfSnake; //it's an array
@@ -74,6 +74,7 @@ function moveSnake() {
   coordinatesOfSnake = readOffset(snakeRef);
   coordinatesOfTarget = readOffset(targetForsnake);
   winScore();
+  checkIfSnakeTouchesBorder();
   timeOutId = setTimeout(function () {
     //throttle requestAnimationFrame to 20fps
     animationFrameId = requestAnimationFrame(moveSnake);
@@ -130,9 +131,21 @@ function winScore() {
 }
 // ====================
 function checkIfSnakeTouchesBorder() {
-  console.log("game over");
+  console.log(coordinatesOfSnake);
+  for (const coordinate of coordinatesOfSnake) {
+    if (coordinate < 0 || coordinate > 480) {
+      console.log("game over");
+      gameOver();
+    }
+  }
 }
 // ====================
+function gameOver() {
+  clearTimeout(timeOutId);
+  cancelAnimationFrame(animationFrameId);
+  snakeContainerEl.innerHTML = `<div class='game-over'><p>GAME OVER</p></div>`;
+}
+// ======================
 //   var id = null;
 // function myMove() {
 //   var elem = document.getElementById("myAnimation");

@@ -146,6 +146,7 @@ ol {
   border: 2px solid orangered;
   position: relative;
   box-sizing: content-box;
+  overflow: hidden;
 }
 .snake {
   position: absolute;
@@ -171,4 +172,16 @@ ol {
   height: 20px;
   background-color: rgb(0, 162, 255);
   border: 1px solid rgb(19, 77, 139);
+}
+/* =================== */
+.game-over {
+  position: absolute;
+  /* width: 20px; */
+  width: fit-content;
+  height: 50px;
+  color: rgb(141, 191, 56);
+  background-color: rgb(249, 246, 245);
+  border: 1px solid saddlebrown;
+  top: 40%;
+  left: 45%;
 }
