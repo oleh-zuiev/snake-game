@@ -32,4 +32,4 @@ requestAnimationFrame(draw);
 }
 The inner functions should not call requestAnimationFrame again.
 
-<!-- =========We can wrap v=============== -->
+<!-- =========We can wrap result of return of function into  array========= -->

@@ -1,12 +1,18 @@
 // control with a help of position and take coordinates 'to win'
-let str;
+let str; //up/down/left/right
 let horizontalPosition;
 let verticalPosition;
+let snakeContainerEl = document.querySelector(".js-snake-container");
 let stopButtonRef = document.querySelector(".stop-button");
 let snakeRef = document.querySelector(".snake");
 let animationFrameId;
 let timeOutId;
-let fps = 5;
+let fps = 25;
+let targetForsnake;
+// ----------
+let coordinatesOfSnake; //it's an array
+let coordinatesOfTarget; //it's an array generateTarget();
+let notFirstTarget; // it's for
 // ============================
 snakeRef.style.top = "51%";
 snakeRef.style.left = "51%";
@@ -38,22 +44,17 @@ document.addEventListener("keydown", function (event) {
       str = "Down";
       break;
   }
-  // window.cancelAnimationFrame(moveSnake);
   getPositionOfSnake();
   animationFrameId = requestAnimationFrame(moveSnake);
-  // moveSnake(str);
 });
 // ========================
 
 function getPositionOfSnake() {
   horizontalPosition = Number.parseInt(snakeRef.style["left"]);
   verticalPosition = Number.parseInt(snakeRef.style["top"]);
-  console.log(horizontalPosition);
-  console.log(verticalPosition);
 }
 // =================
 function moveSnake() {
-  console.log(str);
   if (str === "Up") {
     verticalPosition -= 1;
     snakeRef.style.top = verticalPosition + "%";
@@ -70,7 +71,9 @@ function moveSnake() {
     horizontalPosition += 1;
     snakeRef.style.left = horizontalPosition + "%";
   }
-  readOffset(snakeRef);
+  coordinatesOfSnake = readOffset(snakeRef);
+  coordinatesOfTarget = readOffset(targetForsnake);
+  winScore();
   timeOutId = setTimeout(function () {
     //throttle requestAnimationFrame to 20fps
     animationFrameId = requestAnimationFrame(moveSnake);
@@ -88,11 +91,46 @@ stopButtonRef.addEventListener("click", function () {
 function readOffset(el) {
   let toLeft = el.offsetLeft;
   let fromTop = el.offsetTop;
-  console.log("offsets:", toLeft, fromTop);
+  let arrWithOffsets = [toLeft, fromTop];
+  return arrWithOffsets;
 }
 // =====================
 function generateTarget() {
-  console.log("smth");
+  if (notFirstTarget) {
+    snakeContainerEl.removeChild(targetForsnake);
+  }
+  let randomVertical = getRandomIntInclusive(0, 95);
+  let randomHorizontal = getRandomIntInclusive(0, 95);
+  targetForsnake = document.createElement("div");
+  targetForsnake.style.zIndex = "-3";
+  snakeContainerEl.appendChild(targetForsnake);
+  targetForsnake.style.top = randomVertical + "%";
+  targetForsnake.style.left = randomHorizontal + "%";
+  targetForsnake.classList.add("target");
+  notFirstTarget = true;
+}
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+generateTarget();
+// ====================
+function winScore() {
+  console.log(coordinatesOfSnake, coordinatesOfTarget);
+  console.log(Math.abs(coordinatesOfSnake[0] - coordinatesOfTarget[0]));
+  console.log(Math.abs(coordinatesOfSnake[1] - coordinatesOfTarget[1]));
+  if (
+    Math.abs(coordinatesOfSnake[0] - coordinatesOfTarget[0]) <= 19 &&
+    Math.abs(coordinatesOfSnake[1] - coordinatesOfTarget[1]) <= 19
+  ) {
+    console.log("bingo");
+    generateTarget();
+  }
+}
+// ====================
+function checkIfSnakeTouchesBorder() {
+  console.log("game over");
 }
 // ====================
 //   var id = null;
